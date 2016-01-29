@@ -76,6 +76,9 @@ def home():
         df['answer'] = form['answer']
         df = pd.DataFrame(df, index = [0])
         df.to_sql('user_answers', engine, if_exists = 'append', index = False)
+        if int(form['id']) == todays_question['question_id'][0]:
+            return flask.redirect(flask.url_for('home'))
+
     return flask.render_template('home.html', todays_question = todays_question, name = name)
 
 
@@ -126,7 +129,10 @@ def logout():
 
 
 if __name__ == '__main__':
+    print '\n\nTo select host, port, and debug options run:'
+    print "python main.py --host='0.0.0.0' --port=your_port --debug=True_or_False\n"
     app.secret_key = 'chooseALongAndDifficultString!'
+    app.host = '0.0.0.0'
     args = argv[1:]
     args = [arg.replace('-', '').split('=') for arg in args]
     args = {key: value for key, value in args}

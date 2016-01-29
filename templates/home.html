@@ -38,8 +38,9 @@
 
     function update_question_list(serialized_args){
       source = $.post('/get_old_questions?' + serialized_args, function(result){
-        console.log(result);
-        for (i = 0; i < 5; i++){
+        split = serialized_args.split('&');
+        n = split[1].split('=')[1];
+        for (i = 0; i < n; i++){
           string = get_question_html(result['question_id'][i], result['month_'][i], result['day_'][i], result['question'][i], result['answer'][i]);
           $('#old_data').append(string);
           if (typeof result['answer'][i] === 'object'){
@@ -50,12 +51,15 @@
     };
 
     $(document).ready(function(){
-      update_question_list('shift=0&n=5');
-      var shift = 5;
+      update_question_list('shift=1&n=5');
+      var shift = 6;
       $('#load_more').click(function(){
         update_question_list('shift=' + shift + '&n=5');
         shift += 5;
       });
+      {% if todays_question['answer'][0] == 'Enter your answer here...' %}
+        toggle_hide({{ todays_question['question_id'][0] }});
+      {% endif %}
     });
     </script>
 {% endblock %}
