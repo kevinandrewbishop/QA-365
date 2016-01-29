@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+    <script>
+    var monthNames = ["Zero_Index", "January", "February", "March", "April", "May", "June",
+                          "July", "August", "September", "October", "November", "December"];
+
+    $("form").on("submit", function (e) {
+      e.preventDefault();
+    });
+
+    function get_question_html(question_id, month_, day_, question, answer){
+      if(typeof answer === 'object'){
+        answer = '';
+      };
+      string = '<div id="' + question_id + '">'
+      string += '<h3>' + monthNames[month_] + ' ' + day_ + '</h3>'
+      string += '<p><em>' + question + '</em></p>'
+      string += '<form role="form" method="post">'
+      string += '<div class="form-group">'
+      string +=  '<label for="answer">Answer:</label>'
+      string +=  '<input type="hidden" name="id" value="' + question_id + '"/>'
+      string += '<p class="hide_toggle" id="answer">' + answer +'</p>'
+      string += '<a class="hide_toggle" onClick="toggle_hide(' + question_id + ')">Edit</a>'
+      string += '<textarea class="form-control hide_toggle hidden" name="answer" rows="10" id="answer">' + answer +'</textarea>'
+      string += '<button class="btn hide_toggle hidden" type="submit">Submit</button>&nbsp&nbsp'
+      string += '<a class="hide_toggle hidden" onClick="toggle_hide(' + question_id + ')">Skip Answer</a>'
+      string += '</div>'
+      string += '</form>'
+      string += '</div>'
+      string += '<br>'
+      return string;
+    };
+
+    function toggle_hide(div_id){
+      $('#' + div_id + ' .hide_toggle').toggleClass('hidden');
+    }
+
+    function update_question_list(serialized_args){
+      source = $.post('/get_old_questions?' + serialized_args, function(result){
+        console.log(result);
+        for (i = 0; i < 5; i++){
+          string = get_question_html(result['question_id'][i], result['month_'][i], result['day_'][i], result['question'][i], result['answer'][i]);
+          $('#old_data').append(string);
+          if (typeof result['answer'][i] === 'object'){
+            toggle_hide(result['question_id'][i]);
+          };
+        };
+      }, 'json');
+    };
+
+    $(document).ready(function(){
+      update_question_list('shift=0&n=5');
+      var shift = 5;
+      $('#load_more').click(function(){
+        update_question_list('shift=' + shift + '&n=5');
+        shift += 5;
+      });
+    });
+    </script>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Q&ampA 365</h1>
+      <h2>Simple Daily Journaling for 5 Years</h2>
+    </div>
+    <h1>Welcome {{ name }}!</h1>
+    <h3>Today's Question</h3>
+    <p><em>{{ todays_question['question'][0] }}</em></p>
+    <div id="{{ todays_question['question_id'][0] }}">
+      <form role="form" method="post">
+        <div class="form-group">
+          <input type="hidden" name="id" value="{{ todays_question['question_id'][0]}}"/>
+          <label for="answer">Answer:</label>
+          <p class="hide_toggle" id="answer">{{ todays_question['answer'][0] }}</p>
+          <a class="hide_toggle" onClick="toggle_hide({{ todays_question['question_id'][0]}})">Edit</a>
+          <textarea class="form-control hide_toggle hidden" name="answer" rows="10" id="answer">{{ todays_question['answer'][0] }}</textarea>
+          <button class="btn hide_toggle hidden" onClick='window.location.replace("http://stackoverflow.com")' type="submit">Submit</button>&nbsp&nbsp
+          <a class="hide_toggle hidden" onClick="toggle_hide({{ todays_question['question_id'][0]}})">Skip Answer</a>
+        </div>
+      </form>
+    </div>
+    <br>
+    <h2>Past Questions</h2>
+      <div id="old_data">
+      </div>
+      <button class = "btn btn-lg btn-primary center-block" id="load_more">Load More</button>
+      <br>
+      <p> </p>
+  </div>
+{% endblock %}

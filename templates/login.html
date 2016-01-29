@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h1>Login Here</h1>
+  {% if error %}
+  <p>{{ error | safe }}</p>
+  {% else %}
+  <p>Don't have an account? <a href="/register">Register here</a>.</p>
+  {% endif %}
+  <form class="form-horizontal" role="form" method="post">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="email">Email:</label>
+      <div class="col-sm-10">
+        <input type="email" class="form-control" name="email" id="email" placeholder="Enter email">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pwd">Password:</label>
+      <div class="col-sm-10">
+        <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Enter password">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn" type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

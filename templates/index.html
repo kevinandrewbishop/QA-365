@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+    <script>
+    $(document).ready(function(){
+      var today = new Date();
+      var m = today.getMonth();
+      var d = today.getDate();
+      var y = today.getFullYear();
+    })
+    </script>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Q&ampA 365</h1>
+      <h2>Simple Daily Journaling for 5 Years</h2>
+    </div>
+    {% if name %}
+    <p>Welcome {{ name }}!</p>
+    <p>Head over to the <a href="/home">Home</a> section to get started.</p>
+    {% else %}
+    <p>Welcome Stranger!</p>
+    <p>Try <a href="/login">logging</a> in to get started!</p>
+    {% endif %}
+  </div>
+{% endblock %}
