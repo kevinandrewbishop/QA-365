@@ -17,12 +17,44 @@
       <h1>Q&ampA 365</h1>
       <h2>Simple Daily Journaling for 5 Years</h2>
     </div>
-    {% if name %}
-    <p>Welcome {{ name }}!</p>
-    <p>Head over to the <a href="/home">Home</a> section to get started.</p>
-    {% else %}
-    <p>Welcome Stranger!</p>
-    <p>Try <a href="/login">logging</a> in to get started!</p>
-    {% endif %}
+    <div class="row">
+      <div class="col-sm-1">
+      </div>
+      <div class="col-sm-8">
+        {% if name %}
+        <h1>Welcome {{ name }}!</h1>
+        {% else %}
+        <h1>Welcome Stranger!</h1>
+        <p>Try <a href="/login">logging</a> in to get started!</p>
+        {% endif %}
+        <p>Q&ampA 365 is a daily QA format journal meant to be kept for five years.
+          Over time, its users can see themselves change and evolve as last
+          year's answers come around again full circle.
+        </p>
+        <p>The idea was inspired (or stolen) by the actual book "Q&ampA a day: 5-year Journal"
+          which is available on Amazon. From the amazon description:
+        </p>
+        <p>
+          Do you ever stop to wonder how you got where you are? The Q&ampA a Day Journal
+          shows you what was going through your head each day—for five years of your life.
+          Simply turn to today’s date, answer the question at the top of the page, and when
+          you finish the journal, start over. As you return to the daily questions again over
+          the years, you’ll notice how your answers change (or don’t)! With questions that
+          are sometimes provocative (“On a scale of one to ten, how happy are you?”),
+          occasionally quirky (“What can you smell right now?”), and inevitably interesting
+          (“If you could travel anywhere tomorrow, where would you go?”), this classically
+          designed journal—embellished with beautiful details—is the perfect gift for anyone
+           embarking on a new phase of life.
+        </p>
+        {% if name %}
+        <p>Head over to the <a href="/home">Home</a> section to get started.</p>
+        {% else %}
+        <p>Head over to <a href="/login">login</a> or <a href="/register">register</a> to get started.</p>
+        {% endif %}
+      </div>
+      <div class="col-sm-3">
+      </div>
+    </div>
+
   </div>
 {% endblock %}
